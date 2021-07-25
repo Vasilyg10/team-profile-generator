@@ -8,15 +8,15 @@ const createEngineer = createdEmployees => {
         if (createdEmployees[i].role === 'Engineer') {
             const engineer = new Engineer(createdEmployees[i].name, createdEmployees[i].id, createdEmployees[i].email, createdEmployees[i].github);
             return `
-                <div class="">
+                <div class="card">
                     <div class="">
-                        <h2 class="">${engineer.getName()}</h2>
-                        <h2 class="">${engineer.getRole()}</h2>
+                        <h2 class="content">${engineer.getName()}</h2>
+                        <h2 class="content">${engineer.getRole()}</h2>
                     </div>
-                    <ul class="">
-                        <li class="">ID: ${engineer.getId()}</li>
-                        <li class=""><a href="mailto:${engineer.getEmail()}">Email: ${engineer.getEmail()}</a</li>
-                        <li class="">Github: ${engineer.getGithub()}</li>
+                    <ul class="card-content">
+                        <li class="content">ID: ${engineer.getId()}</li>
+                        <li class="content"><a href="mailto:${engineer.getEmail()}">Email: ${engineer.getEmail()}</a></li>
+                        <li class="content"><a href="http://github.com/${engineer.getGithub()}" target="_blank">Github: ${engineer.getGithub()}</a></li>
                     </ul>
                 </div>
             `
@@ -29,15 +29,15 @@ const createIntern = createdEmployees => {
         if (createdEmployees[i].role === 'Intern') {
             const intern = new Intern(createdEmployees[i].name, createdEmployees[i].id, createdEmployees[i].email, createdEmployees[i].school);
             return `
-                <div class="">
+                <div class="card">
                     <div class="">
-                        <h2 class="">${intern.getName()}</h2>
-                        <h2 class="">${intern.getRole()}</h2>
+                        <h2 class="content">${intern.getName()}</h2>
+                        <h2 class="content">${intern.getRole()}</h2>
                     </div>
-                    <ul class="">
-                        <li class="">ID: ${intern.getId()}</li>
-                        <li class=""><a href="mailto:${intern.getEmail()}">Email: ${intern.getEmail()}</a</li>
-                        <li class="">School: ${intern.getSchool()}</li>
+                    <ul class="card-content">
+                        <li class="content">ID: ${intern.getId()}</li>
+                        <li class="content"><a href="mailto:${intern.getEmail()}">Email: ${intern.getEmail()}</a></li>
+                        <li class="content">School: ${intern.getSchool()}</li>
                     </ul>
                 </div>
             `
@@ -50,15 +50,15 @@ const createManager = createdEmployees => {
         if (createdEmployees[i].role === 'Manager') {
             const manager = new Manager(createdEmployees[i].name, createdEmployees[i].id, createdEmployees[i].email, createdEmployees[i].officeNumber);
             return `
-                <div class="">
+                <div class="card">
                     <div class="">
-                        <h2 class="">${manager.getName()}</h2>
-                        <h2 class="">${manager.getRole()}</h2>
+                        <h2 class="content">${manager.getName()}</h2>
+                        <h2 class="content">${manager.getRole()}</h2>
                     </div>
-                    <ul class="">
-                        <li class="">ID: ${manager.getId()}</li>
-                        <li class=""><a href="mailto:${manager.getEmail()}">Email: ${manager.getEmail()}</a</li>
-                        <li class="">Office Number: ${manager.getOfficeNumber()}</li>
+                    <ul class="card-content">
+                        <li class="content">ID: ${manager.getId()}</li>
+                        <li class="content"><a href="mailto:${manager.getEmail()}">Email: ${manager.getEmail()}</a></li>
+                        <li class="content">Office Number: ${manager.getOfficeNumber()}</li>
                     </ul>
                 </div>
             `
@@ -77,23 +77,24 @@ module.exports = createdEmployees => {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Team Members</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     </head>
     
     <body>
-        <div class="">
-            <div class="">
+        <div class="primary">
+            <div class="card-header-title is-centered">
                 <h1 class="">Team Members</h1>
             </div>
         </div>
-        <div class="">
-            <div class="">
-                <div class="">
+        <div class="primary">
+            <div class="columns">
+                <div class="column">
                     ${createEngineer(createdEmployees)}
                 </div>
-                <div class="">
+                <div class="column">
                     ${createIntern(createdEmployees)}
                 </div>
-                <div class="">
+                <div class="column">
                     ${createManager(createdEmployees)}
                 </div>
             </div>
