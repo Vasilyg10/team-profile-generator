@@ -5,63 +5,141 @@ const Employee = require('./lib/Employee');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
+const htmlTemplate = require('./src/htmlTemplate');
 
-const createdEmployees = [];
+let createdEmployees = [];
 
-const menuQuestions = [
+const engineerQuestions = [
     {
         type: 'input',
-        name: 'name',
-        message: 'Please provide Team Member name.'
+        name: 'nameEngineer',
+        message: "Please provide Engineer's name."
     },
     {
         type: 'input',
-        name: 'id',
-        message: 'Please provide Team Member id'
+        name: 'idEngineer',
+        message: "Please provide Engineer's id."
     },
     {
         type: 'input',
-        name: 'email',
-        message: 'Please provide Team Member email address.'
+        name: 'emailEngineer',
+        message: "Please provide Engineer's email address."
     },
     {
-        type: 'list',
-        name: 'role',
-        choices: ['Manager', 'Intern', 'Engineer'],
-        message: 'Please select the employees role.'
+        type: 'input',
+        name: 'githubEngineer',
+        message: "Please provide Engineer's github username."
     }
-]
+];
 
-function writeToFile(fileName, data) {
-    fs.writeFile(fileName, data, function(err) {
+const internQuestions = [
+    {
+        type: 'input',
+        name: 'nameIntern',
+        message: "Please provide Intern's name."
+    },
+    {
+        type: 'input',
+        name: 'idIntern',
+        message: "Please provide Intern's id."
+    },
+    {
+        type: 'input',
+        name: 'emailIntern',
+        message: "Please provide Intern's email address."
+    },
+    {
+        type: 'input',
+        name: 'schoolIntern',
+        message: "Please provide Intern's School."
+    }
+];
+
+const managerQuestions = [
+    {
+        type: 'input',
+        name: 'nameManager',
+        message: "Please provide Manager's name."
+    },
+    {
+        type: 'input',
+        name: 'idManager',
+        message: "Please provide Manager's id."
+    },
+    {
+        type: 'input',
+        name: 'emailManager',
+        message: "Please provide Manager's email address."
+    },
+    {
+        type: 'input',
+        name: 'officeNumberManager',
+        message: "Please provide Manager's office number."
+    }
+];
+
+function managerInit() {
+    return inquirer
+        .prompt(managerQuestions)
+        .then(answers => {
+            manager = new Manager(answers.nameManager, answers.idManager, answers.emailManager, answers.officeNumberManager);
+            createdEmployees.push(manager);
+            return createdEmployees;
+        });
+};
+
+function nextEmployee() {
+    return inquirer
+        .prompt([
+            {
+                type: 'list',
+                name: 'addNextEmployee',
+                message: 'Would you like to add another Engineer, Intern, or End?',
+                choices: ['Engineer', 'Intern', 'End']
+            }
+        ])
+        .then(answers => {
+            switch (answers.addNextEmployee) {
+                case 'Engineer':
+                    engineerInit().then(nextEmployee);
+                    break;
+                case 'Intern':
+                    internInit().then(nextEmployee);
+                    break;
+                case 'End':
+                    let data = htmlTemplate(createdEmployees);
+                    write(data);
+                    break;
+            }
+        })
+};
+
+function engineerInit() {
+    return inquirer
+        .prompt(engineerQuestions)
+        .then(answers => {
+            engineer = new Engineer(answers.nameEngineer, answers.idEngineer, answers.emailEngineer, answers.githubEngineer);
+            createdEmployees.push(engineer);
+            return createdEmployees;
+        });
+};
+
+function internInit() {
+    return inquirer
+        .prompt(internQuestions)
+        .then(answers => {
+            intern = new Intern(answers.nameIntern, answers.idIntern, answers.emailIntern, answers.schoolIntern);
+            createdEmployees.push(intern);
+            return createdEmployees;
+        });
+};
+
+const write = content => {
+    fs.writeFile('./dist/index.html', content, function(err) {
         if (err) return console.log(err)
         console.log('Succesfully wrote file!')
     })
 }
 
-function init() {
-    inquirer
-        .prompt(menuQuestions)
-        .then(answers => {
-        
-            if(answers.role === 'Manager') {
-               inquirer.prompt([{
-                    type: 'input',
-                    name: 'test',
-                    message: 'Youve reached the next stage of questioning'
-               }]).then(object => {
-                    const fakeManager = {name: 'boss', id: 5, email: 'test@test.com' }
-                    createdEmployees.push(fakeManager)
-                    console.log('CREATED EMPLOYEES -> ', createdEmployees)
-                })
-
-            } else if( answers.role === 'Intern') {
-                //do intenrny stuff
-            } else {
-                //engineery things
-            }
-
-        })
-}
-
-init()
+managerInit()
+    .then(nextEmployee)
