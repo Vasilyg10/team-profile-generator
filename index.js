@@ -1,4 +1,4 @@
-let inquirer = require('inquirer');
+const inquirer = require('inquirer');
 const jest = require('jest');
 const fs = require('fs');
 const Employee = require('./lib/Employee');
@@ -12,18 +12,23 @@ const menuQuestions = [
     {
         type: 'input',
         name: 'name',
-        message: 'Please provide Team Members name.'
+        message: 'Please provide Team Member name.'
+    },
+    {
+        type: 'input',
+        name: 'id',
+        message: 'Please provide Team Member id'
     },
     {
         type: 'input',
         name: 'email',
-        message: 'Please input your email address.'
+        message: 'Please provide Team Member email address.'
     },
     {
         type: 'list',
         name: 'role',
         choices: ['Manager', 'Intern', 'Engineer'],
-        message: 'Please enter the employees role.'
+        message: 'Please select the employees role.'
     }
 ]
 
